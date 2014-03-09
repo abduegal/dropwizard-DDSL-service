@@ -9,7 +9,7 @@ zookeeper:
 
 configwriter:
   destination: generatedConfig.conf
-  shellCommand: nginx -s reload
+  shellCommand: sudo nginx -s reload
   secondsBetweenChecks: 10
 
 http:

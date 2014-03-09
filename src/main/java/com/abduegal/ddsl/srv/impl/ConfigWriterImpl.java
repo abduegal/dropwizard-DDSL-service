@@ -118,13 +118,12 @@ public class ConfigWriterImpl implements ConfigwriterSrv{
         template.merge( context, sw );
         String outputData = sw.toString();
 
-        FileOutputStream outputStream = new FileOutputStream(configDestination);
         Files.write(new File(configDestination).toPath(), outputData.getBytes());
     }
 
     /**
      * Complex object warning! short explanation :)
-     * The unique servers are stored in the Map<Unique Server, Server location> list.
+     * The Path are stored in the Map<Path, Server location> list.
      * The server location (SL) tells the IP # and Port # of the server.
      * @return
      */
@@ -134,13 +133,13 @@ public class ConfigWriterImpl implements ConfigwriterSrv{
         Map<String, List<SL>> map = new LinkedHashMap<>();
 
         for(ServiceWithLocations serviceWithLocations : swls){
-            map.put(serviceWithLocations.id().name(), new ArrayList<SL>());
-
-            for(ServiceLocation sl : serviceWithLocations.locations()){
-                URL url = new URL(sl.url());
-                map.get(serviceWithLocations.id().name()).add(
-                        new SL(url.getHost(), url.getPort())
-                );
+            for(ServiceLocation serviceLocation: serviceWithLocations.locations()){
+                URL url = new URL(serviceLocation.url());
+                SL sl = new SL(url.getHost(), url.getPath(), url.getPort());
+                if(map.get(sl.getPathAsKey()) == null) {
+                    map.put(sl.getPathAsKey(), new ArrayList<SL>());
+                }
+                map.get(sl.getPathAsKey()).add(sl);
             }
 
         }
@@ -160,9 +159,11 @@ public class ConfigWriterImpl implements ConfigwriterSrv{
     public static final class SL{
         private final String host;
         private final Integer port;
+        private final String path;
 
-        public SL(String host, Integer port) {
+        public SL(String host, String path, Integer port) {
             this.host = host;
+            this.path = path.substring(1); //remove first forward slash
             this.port = port;
         }
 
@@ -172,6 +173,17 @@ public class ConfigWriterImpl implements ConfigwriterSrv{
 
         public Integer getPort() {
             return port;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public String getPathAsKey(){
+            if(path.isEmpty()){
+                return "root";
+            }
+            return path;
         }
 
     }
