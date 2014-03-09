@@ -1,4 +1,4 @@
-[Dropwizard] - [DDSL] service
+[Dropwizard] - DDSL service
 =========
 
 A [Dropwizard] service that serves as a [DDSL] (Dynamic Distributed Service Locator).  
