@@ -102,9 +102,16 @@ Navigate to the Dist folder
 ```sh
 java -jar ddsl-service-1.0.jar server ddsl.yml
 ```  
-### Step 4:
+#### Step 4:
 Run other services and let them connect with the [DDSL] library.
 There are also DDSL plugins available for: Play Framework 1.x, Play Framework 2, Dropwizard and Ruby
+
+#### Step 5:
+Configure nginx with your service:
+```
+nginx -c /absolute/path/to/your/configfile/generatedConfig.conf
+```
+
 License
 ----
 
