@@ -111,7 +111,7 @@ License
 MIT
 
 [DDSL]:https://github.com/mbknor/ddsl
-[Dropwizard]:dropwizard.codahale.com
+[Dropwizard]:https://dropwizard.codahale.com
 [nginx]:http://wiki.nginx.org/Main
 [Zookeeper]:http://zookeeper.apache.org/
 [configwriter]:https://github.com/mbknor/ddslConfigWriter
