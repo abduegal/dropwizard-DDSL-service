@@ -54,21 +54,23 @@ All those service locations... This means a lot of configuring
 
 This is where DDSL helps..
 
-Differences in the configwriter
+Differences with the other [configwriter]
 ==========
 The configwriter in this module works slightly different from the [configwriter] created by mbknor.  
 Since this configwriter is also able to support multiple different services at the same time. And is thus able to run multiple services on a single port #, by using the DDSL name attribute to resolve the location path.
 
 For example:  
-You have 4 identical authentication services with the name "authentication".  
-You also have 3 identical calculation services with the name "calculator"   
+You have 4 identical authentication services running on: 127.0.0.1/xxxx/api/auth.  
+You also have 3 identical calculation services running on: 127.0.0.1/xxxx/api/calc.   
 These 7 services are hosted on different ports (and maybe on different hosts aswell)  
 The load balancer is hosted for example on port 7080 and on hostname: 127.0.0.1  
 The result will then be as follow:  
-127.0.0.1:7080/authentication will resolve to: the authentication services
-127.0.0.1:7080/calculator will resolve to: the calculation services.  
+127.0.0.1:7080/api/auth will resolve to: the authentication services
+127.0.0.1:7080/api/calc will resolve to: the calculation services.  
   
-Its important that you don't add "/" to the hostname to support subpaths since zookeeper does not support that.
+You also don't have to predefine the services since this configwriter uses the: getAllAvailableServices method.  
+  
+Backwards compatibility has been kept :)  
 
 Version
 ----
