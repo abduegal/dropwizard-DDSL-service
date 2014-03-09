@@ -5,7 +5,7 @@ A [Dropwizard] service that serves as a [DDSL] (Dynamic Distributed Service Loca
   
 #### The Dropwizard service contains the following:
   - Runs the [DDSL] host / provider (No need to manually install / configure Zookeeper :) )
-  - Allows you to configure the [DDSL] host / provider settings (Host adres, port etc)
+  - Allows you to configure the [DDSL] host / provider settings (Host adres, port etc) in 1 file.
   - Listens to other service that can be registered through [DDSL]
   - Configures the load balancer (<B>nginx</B>) and triggers an update when service are added.  
 
