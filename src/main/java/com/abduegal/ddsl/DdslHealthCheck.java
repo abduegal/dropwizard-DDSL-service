@@ -1,6 +1,7 @@
 package com.abduegal.ddsl;
 
-import com.yammer.metrics.core.HealthCheck;
+
+import com.codahale.metrics.health.HealthCheck;
 
 /**
  * User: A.Egal
@@ -10,7 +11,7 @@ import com.yammer.metrics.core.HealthCheck;
 public class DdslHealthCheck extends HealthCheck {
 
     public DdslHealthCheck(String name) {
-        super(name);
+
     }
 
     @Override

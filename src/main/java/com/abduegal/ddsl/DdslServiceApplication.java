@@ -6,9 +6,9 @@ import com.abduegal.ddsl.srv.ConfigwriterSrv;
 import com.abduegal.ddsl.srv.ZookeeperSrv;
 import com.abduegal.ddsl.srv.impl.ConfigWriterImpl;
 import com.abduegal.ddsl.srv.impl.ZookeeperSrvImpl;
-import com.yammer.dropwizard.Service;
-import com.yammer.dropwizard.config.Bootstrap;
-import com.yammer.dropwizard.config.Environment;
+import io.dropwizard.Application;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
 
 /**
  * Main service class.
@@ -16,15 +16,20 @@ import com.yammer.dropwizard.config.Environment;
  * Date: 3/8/14
  * Time: 3:01 PM
  */
-public class DdslService extends Service<DdslServiceConfig>{
+public class DdslServiceApplication extends Application<DdslServiceConfig> {
 
-    public static void main(String[] args) throws Exception{
-        new DdslService().run(args);
+    public static void main(String[] args) throws Exception {
+        new DdslServiceApplication().run(args);
+    }
+
+    @Override
+    public String getName() {
+        return "DDSL Service";
     }
 
     @Override
     public void initialize(Bootstrap<DdslServiceConfig> bootstrap) {
-        bootstrap.setName("Ddsl service");
+
     }
 
     @Override
@@ -34,8 +39,8 @@ public class DdslService extends Service<DdslServiceConfig>{
 
         ConfigwriterSrv configwriterSrv = new ConfigWriterImpl(config);
         configwriterSrv.startLoadbalancer();
+        environment.jersey().register(new DdslResource());
+        environment.healthChecks().register("Ddsl service", new DdslHealthCheck("Ddsl service"));
 
-        environment.addResource(new DdslResource());
-        environment.addHealthCheck(new DdslHealthCheck("Ddsl service"));
     }
 }

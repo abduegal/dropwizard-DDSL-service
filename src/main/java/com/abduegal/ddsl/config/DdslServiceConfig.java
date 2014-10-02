@@ -1,6 +1,7 @@
 package com.abduegal.ddsl.config;
 
-import com.yammer.dropwizard.config.Configuration;
+
+import io.dropwizard.Configuration;
 
 /**
  * User: A.Egal

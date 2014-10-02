@@ -4,6 +4,7 @@ import com.abduegal.ddsl.config.DdslServiceConfig;
 import com.abduegal.ddsl.config.ZookeeperSettings;
 import com.abduegal.ddsl.srv.ZookeeperSrv;
 import org.apache.zookeeper.server.NIOServerCnxn;
+import org.apache.zookeeper.server.NIOServerCnxnFactory;
 import org.apache.zookeeper.server.ZooKeeperServer;
 import org.apache.zookeeper.server.persistence.FileTxnSnapLog;
 
@@ -24,7 +25,7 @@ public class ZookeeperSrvImpl implements ZookeeperSrv {
 
     private final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-    private NIOServerCnxn.Factory cnxnFactory;
+    private NIOServerCnxnFactory cnxnFactory;
 
     public ZookeeperSrvImpl(DdslServiceConfig config) {
         this.config = config;
@@ -53,7 +54,8 @@ public class ZookeeperSrvImpl implements ZookeeperSrv {
             zkServer.setMinSessionTimeout(config.getInitLimit());
             InetSocketAddress address = new InetSocketAddress(config.getClientHost(), config.getClientPort());
 
-            cnxnFactory = new NIOServerCnxn.Factory(address, config.getSyncLimit());
+            cnxnFactory = new NIOServerCnxnFactory();
+            cnxnFactory.configure(address,config.getSyncLimit());
 
             cnxnFactory.startup(zkServer);
             cnxnFactory.join();
