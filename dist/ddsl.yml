@@ -12,6 +12,11 @@ configwriter:
   shellCommand: sudo nginx -s reload
   secondsBetweenChecks: 10
 
-http:
-  port: 0
-  adminPort: 0
+server:
+  applicationConnectors:
+    - type: http
+      port: 0
+  adminConnectors:
+    - type: http
+      port: 0
+

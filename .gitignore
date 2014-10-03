@@ -3,3 +3,8 @@ zookeeperData
 zookeeperLog
 target
 generatedConfig.conf
+
+ddsl-service.iml
+.idea
+
+.idea/*l
