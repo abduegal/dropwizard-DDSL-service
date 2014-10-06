@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Dropwizard-ddsl-service by abduegal</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Dropwizard-ddsl-service</h1>
+        <h2>A standalone service discover and load balancer module for dropwizard</h2>
+        <a href="https://github.com/abduegal/dropwizard-DDSL-service" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="dropwizard---ddsl-service" class="anchor" href="#dropwizard---ddsl-service"><span class="octicon octicon-link"></span></a>
+<a href="https://dropwizard.codahale.com">Dropwizard</a> - DDSL service</h1>
+
+<p>A <a href="https://dropwizard.codahale.com">Dropwizard</a> service that serves as a <a href="Dynamic%20Distributed%20Service%20Locator">DDSL</a>.  </p>
+
+<h4>
+<a name="the-dropwizard-service-contains-the-following" class="anchor" href="#the-dropwizard-service-contains-the-following"><span class="octicon octicon-link"></span></a>The Dropwizard service contains the following:</h4>
+
+<ul>
+<li>Runs the <a href="https://github.com/mbknor/ddsl">DDSL</a> host / provider (No need to manually install / configure Zookeeper :) )</li>
+<li>Allows you to configure the <a href="https://github.com/mbknor/ddsl">DDSL</a> host / provider settings (Host adres, port etc) in 1 file.</li>
+<li>Listens to other service that can be registered through <a href="https://github.com/mbknor/ddsl">DDSL</a>
+</li>
+<li>Configures the load balancer (<b>nginx</b>) and triggers an update when service are added.<br>
+</li>
+</ul><h1>
+<a name="how-does-it-work" class="anchor" href="#how-does-it-work"><span class="octicon octicon-link"></span></a>How does it work</h1>
+
+<p>You can start the microservice (after installing <a href="http://wiki.nginx.org/Main">nginx</a>) with the following command:  </p>
+
+<ul>
+<li>Navigate to the Dist folder </li>
+</ul><div class="highlight highlight-sh"><pre>java -jar ddsl-service-1.0.jar server ddsl.yml
+</pre></div>
+
+<p>The DDSL service wil then listen to other services. Other services (created with i.e. Play Framework, Dropwizard or Ruby) can register to the DDSL service after providing their name, version # and location.<br>
+The DDSL service will then build a configuration file for the HTTP server (<a href="http://wiki.nginx.org/Main">nginx</a>) which will serve as a load balancer.</p>
+
+<h1>
+<a name="what-is-ddsl" class="anchor" href="#what-is-ddsl"><span class="octicon octicon-link"></span></a>What is DDSL</h1>
+
+<p>DDSL - Dynamic Distributed Service Locator.
+More information can be found here: <a href="https://github.com/mbknor/ddsl">https://github.com/mbknor/ddsl</a></p>
+
+<h4>
+<a name="dynamic" class="anchor" href="#dynamic"><span class="octicon octicon-link"></span></a>Dynamic</h4>
+
+<ul>
+<li>No admin needed</li>
+<li>You don't have to manually add your service / version to the repository</li>
+<li>Your application can automatically register its location. -- It can also register it's "quality" (Clients will preferred locations with better "quality"</li>
+<li>Locations on "localhost" will be preferred</li>
+<li>You can mix several "environments" (prod, test) within the same DDSL-repository</li>
+<li>Automatically load balancing between multiple locations with same "quality"</li>
+<li>Service is automatically removed from repository, if it crashes/go down</li>
+</ul><h4>
+<a name="distributed" class="anchor" href="#distributed"><span class="octicon octicon-link"></span></a>Distributed</h4>
+
+<ul>
+<li>DDSL has no single point of failure</li>
+<li>It uses ZooKeeper as its dynamic distributed storage</li>
+</ul><h4>
+<a name="service-locator" class="anchor" href="#service-locator"><span class="octicon octicon-link"></span></a>Service locator</h4>
+
+<ul>
+<li>A repository of services (with version) and their current locations</li>
+</ul><h4>
+<a name="where-does-it-help" class="anchor" href="#where-does-it-help"><span class="octicon octicon-link"></span></a>Where Does it help</h4>
+
+<p>In many big companies you have a lot of services (SOAP, REST, etc) spread across many servers on several different Web Containers/Application Servers/ESB (Weblogic, Glassfish, Tomcat, Jetty, Mule, etc). You also have several different environments: test, preprod, prod etc with different servers and databases etc.</p>
+
+<p>One service might use several other services.</p>
+
+<p>You might also have (or want) several different versions of one service to run at the same time.</p>
+
+<p>All those service locations... This means a lot of configuring</p>
+
+<p>This is where DDSL helps..</p>
+
+<h1>
+<a name="differences-with-the-other-configwriter" class="anchor" href="#differences-with-the-other-configwriter"><span class="octicon octicon-link"></span></a>Differences with the other <a href="https://github.com/mbknor/ddslConfigWriter">configwriter</a>
+</h1>
+
+<p>The configwriter in this module works slightly different from the <a href="https://github.com/mbknor/ddslConfigWriter">configwriter</a> created by mbknor.<br>
+Since this configwriter is also able to support multiple different services at the same time. And is thus able to run multiple services on a single port #, by using the DDSL name attribute to resolve the location path.</p>
+
+<p>For example:<br>
+You have 4 identical authentication services running on: 127.0.0.1/xxxx/api/auth.<br>
+You also have 3 identical calculation services running on: 127.0.0.1/xxxx/api/calc.<br>
+These 7 services are hosted on different ports (and maybe on different hosts aswell)<br>
+The load balancer is hosted for example on port 7080 and on hostname: 127.0.0.1<br>
+The result will then be as follow:<br>
+127.0.0.1:7080/api/auth will resolve to: the authentication services
+127.0.0.1:7080/api/calc will resolve to: the calculation services.  </p>
+
+<p>You also don't have to predefine the services since this configwriter uses the: getAllAvailableServices method.  </p>
+
+<p>Backwards compatibility has been kept :)  </p>
+
+<h2>
+<a name="version" class="anchor" href="#version"><span class="octicon octicon-link"></span></a>Version</h2>
+
+<p>1.0 - First release.</p>
+
+<h2>
+<a name="tech" class="anchor" href="#tech"><span class="octicon octicon-link"></span></a>Tech</h2>
+
+<p>Dropwizard DDSL service uses a number of open source projects to work properly:</p>
+
+<ul>
+<li>
+<a href="https://github.com/mbknor/ddsl">DDSL</a> - the Dynamic Distributed Service Locator</li>
+<li>
+<a href="http://zookeeper.apache.org/">Zookeeper</a> - as its dynamic distributed storage</li>
+<li>
+<a href="https://dropwizard.codahale.com">Dropwizard</a> - a Java framework for developing services.</li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<h4>
+<a name="step-1" class="anchor" href="#step-1"><span class="octicon octicon-link"></span></a>step 1:</h4>
+
+<p>Install <a href="http://wiki.nginx.org/Main">nginx</a> and run it.</p>
+
+<h4>
+<a name="step-2" class="anchor" href="#step-2"><span class="octicon octicon-link"></span></a>step 2:</h4>
+
+<p>Edit the ddsl.yml to your needs.</p>
+
+<h4>
+<a name="step-3" class="anchor" href="#step-3"><span class="octicon octicon-link"></span></a>step 3:</h4>
+
+<p>Create the jar file:</p>
+
+<pre><code>mvn package
+</code></pre>
+
+<p>Or
+run the already packaged jar in the dist directory directly.<br>
+Navigate to the Dist folder </p>
+
+<div class="highlight highlight-sh"><pre>java -jar ddsl-service-1.0.jar server ddsl.yml
+</pre></div>
+
+<h4>
+<a name="step-4" class="anchor" href="#step-4"><span class="octicon octicon-link"></span></a>Step 4:</h4>
+
+<p>Run other services and let them connect with the <a href="https://github.com/mbknor/ddsl">DDSL</a> library.
+There are also DDSL plugins available for: Play Framework 1.x, Play Framework 2, Dropwizard and Ruby</p>
+
+<h4>
+<a name="step-5" class="anchor" href="#step-5"><span class="octicon octicon-link"></span></a>Step 5:</h4>
+
+<p>Configure nginx with your service:</p>
+
+<pre><code>nginx -c /absolute/path/to/your/configfile/generatedConfig.conf
+</code></pre>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/abduegal/dropwizard-DDSL-service/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/abduegal/dropwizard-DDSL-service/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/abduegal/dropwizard-DDSL-service"></a> is maintained by <a href="https://github.com/abduegal">abduegal</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
